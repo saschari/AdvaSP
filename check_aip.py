@@ -12,7 +12,9 @@ user interface by supplying --headless.
 
 import pprint
 import pychrome
-
+import json
+import re
+import os
 
 class Crawler:
     def __init__(self, debugger_url='http://127.0.0.1:9222'):
@@ -60,7 +62,23 @@ class Crawler:
         Note: It does not say anything about the request being sucessful,
         there can still be connection issues.
         """
-        pprint.pprint(request)
+        request_string = json.dumps(request)
+        output = open("results.txt", "a")
+        for m in re.finditer('aip', request_string):
+            aipString = request_string[m.start():m.start()+10]
+            if "aip=1" in aipString or "aip = 1" in aipString:
+                print("++++ Request +++++")
+                print("GA is used correctly: %s" %aipString)
+                output.write("++++ Request +++++")
+                output.write("GA is used correctly: %s" %aipString)
+            else:
+                print("++++ Request +++++")
+                print("GA is not used correctly: %s" %aipString)
+                output.write("++++ Request +++++")
+                output.write("GA is not used correctly: %s" %aipString)
+                
+        output.close()
+        #pprint.pprint(request)
 
     def cb_response_received(self, response, **kwargs):
         """Will be called when a response is received.
@@ -68,7 +86,23 @@ class Crawler:
         This includes the originating request which resulted in the
         response being received.
         """
-        pprint.pprint(response)
+        response_string = json.dumps(response)
+        output = open("results.txt", "a")
+        for m in re.finditer('aip', response_string):
+            aipString = response_string[m.start():m.start()+10]
+            if "aip=1" in aipString or "aip = 1" in aipString:
+                print("++++ Request +++++")
+                print("GA is used correctly: %s" %aipString)
+                output.write("++++ Request +++++")
+                output.write("GA is used correctly: %s" %aipString)
+            else:
+                print("++++ Request +++++")
+                print("GA is not used correctly: %s" %aipString)
+                output.write("++++ Request +++++")
+                output.write("GA is not used correctly: %s" %aipString)
+        output.close()
+        
+        #pprint.pprint(response)
 
     def cb_load_event_fired(self, timestamp, **kwargs):
         """Will be called when the page sends an load event.
@@ -84,15 +118,33 @@ class Crawler:
         # whether the site owner's wanted to enable anonymize IP. The expression will
         # fail with a JavaScript exception if Google Analytics is not in use.
         result = self.tab.Runtime.evaluate(expression="ga.getAll()[0].get('anonymizeIp')")
-        pprint.pprint(result)
         
+        # Check the result if it contains "ga not found" --> if no, GA is used on the page
+        result_string = json.dumps(result)
+        if result_string.find("ga is not") <= 0:
+            #pprint.pprint(result)
+            pprint.pprint("Website uses GA")        
+        #output = open("results.txt", "a")
+        #output.write(json.dumps(result) + "\n")
+        #output.close()
+
         # Stop the tab
         self.tab.stop()
 
 
 def main():
+
+    # Remove previous file
+    if os.path.isfile("results.txt"):
+        os.remove("results.txt")
+    
     c = Crawler()
-    c.crawl_page('http://www.feki.de')
+    links = open("versicherungs-websites.txt", "r")
+    for line in links:
+        if len(line) > 1: 
+            line.rstrip()
+            print("----------%s----------" %line)
+            c.crawl_page(line)
 
 
 if __name__ == '__main__':
