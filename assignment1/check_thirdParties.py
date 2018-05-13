@@ -15,6 +15,12 @@ import pychrome
 import json
 import re
 import os
+import pandas as pd
+import matplotlib.pyplot as plt
+
+requests = pd.DataFrame(columns=['CrawledSite', 'URL', 'Site', 'Method', 'Origin'])
+responses = pd.DataFrame(columns=['CrawledSite', 'URL', 'Site', 'Content-type', 'IP', 'Status'])
+current_page = ''
 
 class Crawler:
     def __init__(self, debugger_url='http://127.0.0.1:9222'):
@@ -29,10 +35,10 @@ class Crawler:
         self.tab.Network.requestWillBeSent = self.cb_request_will_be_sent
         self.tab.Network.responseReceived = self.cb_response_received
         self.tab.Page.loadEventFired = self.cb_load_event_fired
-        
+
         # Start our tab after callbacks have been registered
         self.tab.start()
-        
+
         # Enable network notifications for all request/response so our
         # callbacks actually receive some data.
         self.tab.Network.enable()
@@ -40,10 +46,10 @@ class Crawler:
         # Enable page domain notifications so our load_event_fired
         # callback is called when the page is loaded.
         self.tab.Page.enable()
-        
+
         # Navigate to a specific page
         self.tab.Page.navigate(url=url, _timeout=5)
-        
+
         # Wait some time for events. This will wait until tab.stop()
         # is called or the timeout of 10 seconds is reached.
         # In this case we wait for our load event to be fired (see
@@ -62,23 +68,28 @@ class Crawler:
         Note: It does not say anything about the request being sucessful,
         there can still be connection issues.
         """
-        request_string = json.dumps(request)
-        output = open("results.txt", "a")
-        for m in re.finditer('aip', request_string):
-            aipString = request_string[m.start():m.start()+10]
-            if "aip=1" in aipString or "aip = 1" in aipString:
-                print("++++ Request +++++")
-                print("GA is used correctly: %s" %aipString)
-                output.write("++++ Request +++++")
-                output.write("GA is used correctly: %s" %aipString)
-            else:
-                print("++++ Request +++++")
-                print("GA is not used correctly: %s" %aipString)
-                output.write("++++ Request +++++")
-                output.write("GA is not used correctly: %s" %aipString)
-                
-        output.close()
         #pprint.pprint(request)
+        print("--- REQUEST ---\n")
+        crawled_page = ''
+        if kwargs is not None:
+            crawled_page = kwargs['initiator']
+        url = request['url']
+        wwwPos = request['url'].find("://") + 3
+        domainPos = request['url'].find("/", wwwPos)
+        site = request['url'][wwwPos:domainPos]
+        method = request['method']
+        origin = ''
+        if "headers" in request:
+            if "Origin" in request['headers']:
+                origin = request['headers']['Origin']
+
+        print("URL: " + url)
+        print("Site: " + site)
+        print("HTTP method: " + method)
+        print("Origin: " + origin)
+
+        requests.loc[len(requests)] = [current_page, url, site, method, origin]
+
 
     def cb_response_received(self, response, **kwargs):
         """Will be called when a response is received.
@@ -86,23 +97,30 @@ class Crawler:
         This includes the originating request which resulted in the
         response being received.
         """
-        response_string = json.dumps(response)
-        output = open("results.txt", "a")
-        for m in re.finditer('aip', response_string):
-            aipString = response_string[m.start():m.start()+10]
-            if "aip=1" in aipString or "aip = 1" in aipString:
-                print("++++ Request +++++")
-                print("GA is used correctly: %s" %aipString)
-                output.write("++++ Request +++++")
-                output.write("GA is used correctly: %s" %aipString)
-            else:
-                print("++++ Request +++++")
-                print("GA is not used correctly: %s" %aipString)
-                output.write("++++ Request +++++")
-                output.write("GA is not used correctly: %s" %aipString)
-        output.close()
-        
+
+        print("--- RESPONSE ---")
+        crawled_page = ''
+        url = response['url']
+        wwwPos = response['url'].find("://") + 3
+        domainPos = response['url'].find("/", wwwPos)
+        site = response['url'][wwwPos:domainPos]
+        content_type = ''
+        if "headers" in response:
+            if "content-type" in response['headers']:
+                content_type = response['headers']['content-type']
+        ip = response['remoteIPAddress']
+        status = str(response['status'])
+
+        print("URL: " + url)
+        print("Site: " + site)
+        print("Content type: " + content_type)
+        print("IP: " + ip)
+        print("Status: " + status)
+
+        responses.loc[len(responses)] = [current_page, url, site, content_type, ip, status]
+
         #pprint.pprint(response)
+
 
     def cb_load_event_fired(self, timestamp, **kwargs):
         """Will be called when the page sends an load event.
@@ -118,15 +136,6 @@ class Crawler:
         # whether the site owner's wanted to enable anonymize IP. The expression will
         # fail with a JavaScript exception if Google Analytics is not in use.
         result = self.tab.Runtime.evaluate(expression="ga.getAll()[0].get('anonymizeIp')")
-        
-        # Check the result if it contains "ga not found" --> if no, GA is used on the page
-        result_string = json.dumps(result)
-        if result_string.find("ga is not") <= 0:
-            #pprint.pprint(result)
-            pprint.pprint("Website uses GA")        
-        #output = open("results.txt", "a")
-        #output.write(json.dumps(result) + "\n")
-        #output.close()
 
         # Stop the tab
         self.tab.stop()
@@ -134,19 +143,49 @@ class Crawler:
 
 def main():
 
-    # Remove previous file
-    if os.path.isfile("results.txt"):
-        os.remove("results.txt")
-    
-    c = Crawler()
+    # Read sites to crawl
+    sites = []
     links = open("versicherungs-websites.txt", "r")
     for line in links:
-        if len(line) > 1: 
-            line.rstrip()
-            print("----------%s----------" %line)
-            c.crawl_page(line)
+        if len(line) > 1:
+            line = line.rstrip()
+            sites.append(line)
+    links.close()
+
+    # Remove previous file
+    if not (os.path.isfile("requests.csv") and os.path.isfile("responses.csv")):
+        # Crawl all links from text file
+        c = Crawler()
+        for s in sites:
+            print("----------%s----------" %s)
+            global current_page
+            current_page = s
+            c.crawl_page(s)
+
+        # Save findings as csv
+        requests.to_csv("requests.csv", sep=';', encoding='utf-8')
+        responses.to_csv("responses.csv", sep=';', encoding='utf-8')
+    else:
+        requests_load = pd.read_csv("requests.csv", sep=";")
+        responses_load = pd.read_csv("responses.csv", sep=";")
+
+        # Remove query URLs
+        for s in sites:
+            start = s.find(".")+1
+            end = s.find(".", start)
+            s = s[start:end]
+            requests_load = requests_load[requests_load.Site.str.contains(s) == False]
+
+        dist = requests_load.groupby(['Site'])['Site'].count().reset_index(name='distribution')
+        dist_groups = requests_load.groupby(['CrawledSite','Site'])['Site'].count().reset_index(name='distribution')
+        #dist['distribution'] = dist['distribution'] / dist['distribution'].sum()
+        print(dist)
+
+        for index, group in dist_groups.groupby('CrawledSite'):
+            group.plot.bar(x='Site', y='distribution', title=index, rot=0)
+            plt.show()
+
 
 
 if __name__ == '__main__':
     main()
-
