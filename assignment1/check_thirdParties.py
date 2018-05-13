@@ -175,15 +175,27 @@ def main():
             end = s.find(".", start)
             s = s[start:end]
             requests_load = requests_load[requests_load.Site.str.contains(s) == False]
+            responses_load = responses_load[responses_load.Site.str.contains(s) == False]
 
+        # Plots for requests
         dist = requests_load.groupby(['Site'])['Site'].count().reset_index(name='distribution')
         dist_groups = requests_load.groupby(['CrawledSite','Site'])['Site'].count().reset_index(name='distribution')
+
+        dist_groups.groupby(['CrawledSite'])['distribution'].sum().reset_index(name='sum').plot.bar(x='CrawledSite', y='sum', title='Responses from third parties by start URL')
+        plt.savefig('plots\\third_parties_per_url.png')
         #dist['distribution'] = dist['distribution'] / dist['distribution'].sum()
-        print(dist)
 
         for index, group in dist_groups.groupby('CrawledSite'):
             group.plot.bar(x='Site', y='distribution', title=index, rot=0)
-            plt.show()
+            start = index.find(".")+1
+            end = index.find(".", start)
+            plt.savefig('plots\\' + index[start:end] + '_third_parties.png')
+
+        # Plots for responses
+        resp_status_dist = responses_load.groupby(['Status'])['Status'].count().reset_index(name='distribution')
+        resp_status_dist.plot.bar(x='Status', y='distribution', title='Number of status codes for all responses')
+        plt.savefig('plots\\responses_status_codes.png')
+
 
 
 
