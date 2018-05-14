@@ -152,8 +152,7 @@ def main():
             sites.append(line)
     links.close()
 
-    # Remove previous file
-    if not (os.path.isfile("results/requests.csv") and not os.path.isfile("results/responses.csv")):
+    if not (os.path.isfile("results/requests.csv") and os.path.isfile("results/responses.csv")):
         # Crawl all links from text file
         c = Crawler()
         for s in sites:
@@ -187,7 +186,7 @@ def main():
         #dist['distribution'] = dist['distribution'] / dist['distribution'].sum()
 
         for index, group in dist_groups.groupby('CrawledSite'):
-            group.plot.bar(x='Site', y='distribution', title=index, rot=25)
+            group.plot.bar(x='Site', y='distribution', title=index, rot=65)
             start = index.find(".")+1
             end = index.find(".", start)
             plt.tight_layout()
