@@ -1,1 +1,48 @@
-++++ Request +++++GA is not used correctly: aip=true&a++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&a=11++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&a=10++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is not used correctly: aip=true",++++ Request +++++GA is not used correctly: aip=true",++++ Request +++++GA is not used correctly: aip=true",++++ Request +++++GA is used correctly: aip=1&a=63++++ Request +++++GA is used correctly: aip=1&t=dc++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr++++ Request +++++GA is used correctly: aip=1&t=sr
+----------https://www.allianz.com----------
+++++ Request +++++
+GA javascript file is loaded
+++++ Request +++++
+https://www.google-analytics.com/r/collect?v=1&_v=j67&aip=true&a=1237106530&t=pageview&_s=1&dl=https%3A%2F%2Fwww.allianz.com%2Fen%2F&ul=en-us&de=UTF-8&dt=Insurance%20and%20Asset%20Management%20worldwide%20%7C%20Allianz&sd=24-bit&sr=800x600&vp=783x600&je=0&_u=IEBAAAAB~&jid=1609502147&gjid=336304137&cid=537711029.1526330314&tid=UA-63127150-1&_gid=1149715527.1526330314&_r=1&z=1624517680
+GA aip is not used correctly: aip=true&a
+https://www.allianz.com had 1 GA collect requests
+----------https://www.munichre.com----------
+https://www.munichre.com had 0 GA collect requests
+----------https://www.talanx.com----------
+https://www.talanx.com had 0 GA collect requests
+----------https://www.generali.de----------
+https://www.generali.de had 0 GA collect requests
+----------https://www.ruv.de----------
+++++ Request +++++
+GA javascript file is loaded
+++++ Request +++++
+https://www.google-analytics.com/r/collect?v=1&_v=j67&aip=1&a=1733992243&t=pageview&_s=1&dl=https%3A%2F%2Fwww.ruv.de%2Fhome%2F&ul=en-us&de=UTF-8&dt=R%2BV%20Versicherung&sd=24-bit&sr=800x600&vp=800x600&je=0&_u=YEBAAEAB~&jid=1648440411&gjid=1086040979&cid=1174487264.1526330328&tid=UA-89839765-1&_gid=1403931135.1526330328&_r=1&gtm=G4rP4PQZV7&cd1=Startseite&cd2=Startseite&cd3=67&cd4=&z=2059571760
+GA aip is used correctly: aip=1
+https://www.ruv.de had 1 GA collect requests
+----------https://www.axa.com----------
+++++ Request +++++
+GA javascript file is loaded
+++++ Request +++++
+https://www.google-analytics.com/r/collect?v=1&_v=j67&a=1481996085&t=pageview&_s=1&dl=https%3A%2F%2Fwww.axa.com%2F&ul=en-us&de=UTF-8&dt=AXA%20%7C%20Home&sd=24-bit&sr=800x600&vp=783x600&je=0&_u=YEBAAEAB~&jid=165067051&gjid=616719569&cid=1688212874.1526330331&tid=UA-70630536-2&_gid=1744940553.1526330331&_r=1&cd1=home&cd2=Home&cd3=&cd4=en&cd5=Home&z=1021000599
+GA aip is not used at all!
+https://www.axa.com had 1 GA collect requests
+----------https://www.debeka.de----------
+https://www.debeka.de had 0 GA collect requests
+----------https://www.vkb.de----------
+++++ Request +++++
+GA javascript file is loaded
+++++ Request +++++
+https://www.google-analytics.com/r/collect?v=1&_v=j67&aip=1&a=151112957&t=pageview&_s=1&dl=https%3A%2F%2Fwww.vkb.de%2Fcontent%2F&ul=en-us&de=UTF-8&dt=Versicherungen%2C%20private%20Vorsorge%2C%20sichere%20Geldanlagen%20%7C%20Versicherungskammer%20Bayern&sd=24-bit&sr=800x600&vp=783x600&je=0&_u=YEBAAAAB~&jid=1275049052&gjid=1318145008&cid=233499611.1526330339&tid=UA-67413567-1&_gid=55099715.1526330339&_r=1&z=540723294
+GA aip is used correctly: aip=1
+https://www.vkb.de had 1 GA collect requests
+----------https://www.zurich.de----------
+++++ Request +++++
+GA javascript file is loaded
+++++ Request +++++
+++++ Request +++++
+https://www.google-analytics.com/r/collect?v=1&_v=j67&aip=1&a=1909890950&t=pageview&_s=1&dl=https%3A%2F%2Fwww.zurich.de%2Fde-de%2Fprivatkunden&ul=en-us&de=UTF-8&dt=Zurich%20Versicherung%20-%20Privatkunden%20%7C%20zurich.de&sd=24-bit&sr=800x600&vp=800x583&je=0&_u=aGBAAEADQ~&jid=1646374215&gjid=1363386884&cid=1008675726.1526330344&tid=UA-64520612-1&_gid=1810804320.1526330344&_r=1&z=250397423
+GA aip is used correctly: aip=1
+https://www.zurich.de had 1 GA collect requests
+----------https://www.signal-iduna.de----------
+https://www.signal-iduna.de had 0 GA collect requests
+----------https://www.huk.de----------
+https://www.huk.de had 0 GA collect requests

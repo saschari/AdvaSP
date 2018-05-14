@@ -153,7 +153,7 @@ def main():
     links.close()
 
     # Remove previous file
-    if not (os.path.isfile("requests.csv") and os.path.isfile("responses.csv")):
+    if not (os.path.isfile("results/requests.csv") and not os.path.isfile("results/responses.csv")):
         # Crawl all links from text file
         c = Crawler()
         for s in sites:
@@ -163,11 +163,11 @@ def main():
             c.crawl_page(s)
 
         # Save findings as csv
-        requests.to_csv("requests.csv", sep=';', encoding='utf-8')
-        responses.to_csv("responses.csv", sep=';', encoding='utf-8')
+        requests.to_csv("results/requests.csv", sep=';', encoding='utf-8')
+        responses.to_csv("results/responses.csv", sep=';', encoding='utf-8')
     else:
-        requests_load = pd.read_csv("requests.csv", sep=";")
-        responses_load = pd.read_csv("responses.csv", sep=";")
+        requests_load = pd.read_csv("results/requests.csv", sep=";")
+        responses_load = pd.read_csv("results/responses.csv", sep=";")
 
         # Remove query URLs
         for s in sites:
