@@ -60,18 +60,21 @@ for i in tqdm(range(len(packet_list))):
     #if not check_packet(current_packet):
     #    continue
     
-    count = 0
-    for j in range(len(packet_list[i:])):
-        #if not check_packet(packet_list[j]):
-        #    continue
+    #count = 0
+    #for j in range(len(packet_list[i:])):
+    #    #if not check_packet(packet_list[j]):
+    #    #    continue
 
-        if packet_list[j].time - current_time > 5.0:
-            # End of 5 second window
-            break
-        else:
-            count += 1
-
-    if count < 100:
+    #   if packet_list[j].time - current_time > 5.0:
+    #        # End of 5 second window
+    #        break
+    #    else:
+    #        count += 1
+    
+    if packet_list[min(i+25,len(packet_list))].time - current_time > 3.0:
+        if len(current_pcap) < 50:
+            current_pcap = []
+            continue
         print("Found a splitting point")
         wrpcap("{}/{}_theirs.pcap".format(output_dir, pcap_number), current_pcap)
         current_pcap = []

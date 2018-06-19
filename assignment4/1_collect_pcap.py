@@ -71,7 +71,7 @@ def main():
     time.sleep(10)
     
     it = 0
-    links = open("fingerprinting-sites.txt", "r")
+    links = open("inputs/fingerprinting-sites.txt", "r")
     for line in links:
         if len(line) > 1:
             s = line.rstrip()           
@@ -83,7 +83,7 @@ def main():
             
             # Start tcpdump as subprocess
             print("Starting tcpdump...")
-            p = subprocess.Popen(['tcpdump', '-i', 'enp0s3', '-w', str(it) + '.pcap'], stdout=subprocess.PIPE)
+            p = subprocess.Popen(['tcpdump', '-i', 'enp0s3', '-w', "./pcaps/" +str(it) + '.pcap'], stdout=subprocess.PIPE)
             
             # Open the current page
             global current_page, ga_count, aip_set
