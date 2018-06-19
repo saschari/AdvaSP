@@ -6,18 +6,19 @@ from os import walk
 from tqdm import tqdm
 
 # Setup i/o
-output_file = "fingerprints_ours.npy"
-input_dir = "./pcaps/*.pcap"
+output_file = "fingerprints_theirs.npy"
+input_dir = "./split_pcaps/*.pcap"
 
 # Initializing output matrix (80 sites, 2 vecors, 1300 packet sizes)
-output = np.zeros((20,2,1300))
+output = np.zeros((17,2,1300))
 
 # Iterating over all pcap files
 i = 0
 log = open("error_log.txt","w")
 for f in glob(input_dir):
     
-    file_number = f[f.rfind("/")+1:f.find(".pcap")]
+    #file_number = f[f.rfind("/")+1:f.find(".pcap")]
+    file_number = f[f.rfind("/")+1:f.rfind("_theirs")]
     print(file_number)
 
     # Reading in pcap
