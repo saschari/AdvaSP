@@ -11,6 +11,7 @@ Tobias Schwartz (1738195)\\
 \date{Submitted: \today}
 
 \documentclass[12pt]{article}
+\usepackage{graphicx}
 
 \begin{document}
 \maketitle
@@ -22,14 +23,28 @@ used by the user?}
 
 
 \section{Task 2}\label{task2}
-To view only the traffic inside the local network, we employ a display filter in wireshark to show only traffic with destination and source subnet from our own IP-address. Our own IP is most likely 141.13.99.136 and thus we choose 141.13.99.0/24 as subnet filter. This results in only 137 pakets which can be seen in %\autoref{img_wireshark_overview}.
+To view only the traffic inside the local network, we employ a display filter in wireshark to show only traffic with destination and source subnet from our own IP-address. Our own IP is most likely 141.13.99.136 and thus we choose 141.13.99.0/24 as subnet filter. This results in only 137 packets which can be seen in Figure~\ref{img_wireshark_overview}.
 
-% FIGURE \label{img_wireshark_overview}
+\begin{figure}[h]%
+\centering%
+\includegraphics[width=\textwidth]{wireshark_overview.png}%
+\caption{Wireshark local traffic observation}%
+\label{img_wireshark_overview}%
+\end{figure}%
 
-We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets. %(see \autoref{img_wireshark_browser}).
+% FIGURE 
+
+We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets. (see Figure~\ref{img_wireshark_browser}).
 A host with name "SHADY" running Windows 7 or Windows Server 2008 R2 is available on IP-address 141.13.99.130.
 
 % FIGURE \label{img_wireshark_browser}
+\begin{figure}[h]%
+\centering%
+\includegraphics[width=\textwidth]{wireshark_browser.png}%
+\caption{Wireshark BROWSER packet analysis}%
+\label{img_wireshark_browser}%
+\end{figure}%
+
 
 \section{Task 3}\label{task3}
 \end{document}
