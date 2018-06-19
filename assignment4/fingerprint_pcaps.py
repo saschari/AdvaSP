@@ -5,10 +5,18 @@ from scapy.all import *
 from os import walk
 from tqdm import tqdm
 
+# Setup i/o
+output_file = "fingerprints.npy"
+input_dir = "./pcaps/*.pcap"
+
+# Initializing output matrix (80 sites, 2 vecors, 1300 packet sizes)
 output = np.zeros((80,2,1300))
+
+# Iterating over all pcap files
 i = 0
 log = open("error_log.txt","w")
-for f in glob("./pcaps/*.pcap"):
+for f in glob(input_dir):
+    
     # Reading in pcap
     print("Reading in {}".format(f))
     try:
@@ -17,6 +25,7 @@ for f in glob("./pcaps/*.pcap"):
         print("PCAP file {} is broken".format(f))
         log.write("PCAP file {} is broken".format(f))
         continue
+    
     # Setup vectors
     received = np.zeros(1300)
     sent = np.zeros(1300)
@@ -53,6 +62,7 @@ for f in glob("./pcaps/*.pcap"):
             if ip_packet.src == "141.13.99.168":
                 sent[int(packet_length)] += 1
     
+    # Save vectors into output matrix
     output[i,0,:] = received
     output[i,1,:] = sent
 
@@ -62,5 +72,5 @@ for f in glob("./pcaps/*.pcap"):
     #plt.hist(received, log=True)
     #plt.show()
 
-np.save("fingerprints.npy", output, allow_pickle=False)
+np.save(output_file, output, allow_pickle=False)
 log.close()
