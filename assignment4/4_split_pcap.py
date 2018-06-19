@@ -34,7 +34,7 @@ def check_packet(packet):
 
 # Setup i/o
 output_dir = "./split_pcaps/"
-input_file = "./inputs/fingerprinting-traffic.pcap"
+input_file = "./fingerprinting-traffic-filtered.pcap"
 f = input_file
 
 # Iterating over all pcap files
@@ -51,31 +51,32 @@ except:
 # time window of 5 seconds
 # Access all packets
 count = 0
-last_cut = 0
 pcap_number = 0
-split_pcaps = []
+current_pcap = []
 for i in tqdm(range(len(packet_list))):
 
     current_packet = packet_list[i]
     current_time = current_packet.time
-    if not check_packet(current_packet):
-        continue
+    #if not check_packet(current_packet):
+    #    continue
     
     count = 0
     for j in range(len(packet_list[i:])):
-        if not check_packet(packet_list):
-            continue
+        #if not check_packet(packet_list[j]):
+        #    continue
 
         if packet_list[j].time - current_time > 5.0:
-            #print("5 second window end")
+            # End of 5 second window
             break
         else:
             count += 1
 
     if count < 100:
         print("Found a splitting point")
-        #split_pcaps.append(packet_list[last_cut:i])
-        wrpcap("{}_theirs.pcap".format(pcap_number), packet_list[last_cut:i])
+        wrpcap("{}/{}_theirs.pcap".format(output_dir, pcap_number), current_pcap)
+        current_pcap = []
         pcap_number += 1
+    else: 
+        current_pcap.append(packet_list[i])
 
 log.close()
