@@ -1,0 +1,35 @@
+\title{\LARGE{Exercise Sheet 0x02}\\%
+\Large{PSI-AdvaSP-M: Advanced Security and Privacy}
+}
+\author{
+Barbara Hoffmann (1759786)\\
+Sascha Riechel (1740803)\\
+Isabell Sailer (1863490)\\
+Tobias Schwartz (1738195)\\
+}
+
+\date{Submitted: \today}
+
+\documentclass[12pt]{article}
+
+\begin{document}
+\maketitle
+
+
+\section{Task 1}\label{task1}
+\emph{Search for evidence in the pcap file that indicates which kind of web browser was
+used by the user?}
+
+
+\section{Task 2}\label{task2}
+To view only the traffic inside the local network, we employ a display filter in wireshark to show only traffic with destination and source subnet from our own IP-address. Our own IP is most likely 141.13.99.136 and thus we choose 141.13.99.0/24 as subnet filter. This results in only 137 pakets which can be seen in %\autoref{img_wireshark_overview}.
+
+% FIGURE \label{img_wireshark_overview}
+
+We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets. %(see \autoref{img_wireshark_browser}).
+A host with name "SHADY" running Windows 7 or Windows Server 2008 R2 is available on IP-address 141.13.99.130.
+
+% FIGURE \label{img_wireshark_browser}
+
+\section{Task 3}\label{task3}
+\end{document}
