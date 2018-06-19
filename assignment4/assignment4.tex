@@ -34,14 +34,22 @@ To view only the traffic inside the local network, we employ a display filter in
 
 % FIGURE 
 
-We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets. (see Figure~\ref{img_wireshark_browser}).
+We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets (see Figure~\ref{img_wireshark_browser}).
 A host with name "SHADY" running Windows 7 or Windows Server 2008 R2 is available on IP-address 141.13.99.130.
 
-% FIGURE \label{img_wireshark_browser}
 \begin{figure}[h]%
 \centering%
 \includegraphics[width=\textwidth]{images/wireshark_browser.png}%
 \caption{Wireshark BROWSER packet analysis}%
+\label{img_wireshark_browser}%
+\end{figure}%
+
+Additionally, we are able to retrieve a GeoIP entry stating that all examined packets were issued in Bamberg by the ``Verein zur Foerderung eines Deutschen Forschungsnetzes e.V." (see Figure~\ref{img_wireshark_geoip}).
+
+\begin{figure}[h]%
+\centering%
+\includegraphics[width=\textwidth]{images/wireshark_geoip.png}%
+\caption{Wireshark GeoIp observation}%
 \label{img_wireshark_browser}%
 \end{figure}%
 
