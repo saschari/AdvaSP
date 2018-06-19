@@ -8,7 +8,8 @@ Isabell Sailer (1863490)\\
 Tobias Schwartz (1738195)\\
 }
 
-\date{Submitted: \today}
+\date{Submitted: \today\\%
+Token for late submission is being used}
 
 \documentclass[12pt]{article}
 \usepackage{graphicx}
@@ -18,20 +19,18 @@ Tobias Schwartz (1738195)\\
 
 
 \section{Task 1}\label{task1}
-\emph{Search for evidence in the pcap file that indicates which kind of web browser was
-used by the user?}
-In the pcap file we found a packet that uses the Simple Service Discovery Protol, where the USER-AGENT is specified as Google Chrome, as depicted in figure \ref{wireshark_browser}.
+In the pcap file we found a packet that uses the Simple Service Discovery Protol, where the USER-AGENT is specified as Google Chrome, as depicted in Figure~\ref{wireshark_evidence}.
 \begin{figure}[h]%
 \centering%
 \includegraphics[width=\textwidth]{images/task_1_evidence_browser.png}%
 \caption{Wireshark local traffic observation of browser}%
-\label{wireshark_browser}%
+\label{wireshark_evidence}%
 \end{figure}%
 
 
 
 \section{Task 2}\label{task2}
-To view only the traffic inside the local network, we employ a display filter in wireshark to show only traffic with destination and source subnet from our own IP-address. Our own IP is most likely 141.13.99.136 and thus we choose 141.13.99.0/24 as subnet filter. This results in only 137 packets which can be seen in Figure~\ref{img_wireshark_overview}.
+To view only the traffic inside the local network, we employ a display filter in wireshark to show only traffic within the subnet of our own IP-address. We choose 141.13.99.0/24 as this filter. An excerpt of the filtered traffic can be seen in Figure~\ref{img_wireshark_overview}.
 
 \begin{figure}[h]%
 \centering%
@@ -39,8 +38,6 @@ To view only the traffic inside the local network, we employ a display filter in
 \caption{Wireshark local traffic observation}%
 \label{img_wireshark_overview}%
 \end{figure}%
-
-% FIGURE 
 
 We can see a dropbox service running and mainly NBNS and BROWSER traffic broadcasted in the local network. As an example we analyze one of the BROWSER pakets (see Figure~\ref{img_wireshark_browser}).
 A host with name "SHADY" running Windows 7 or Windows Server 2008 R2 is available on IP-address 141.13.99.130.
@@ -58,9 +55,11 @@ Additionally, we are able to retrieve a GeoIP entry stating that all examined pa
 \centering%
 \includegraphics[width=\textwidth]{images/wireshark_geoip.png}%
 \caption{Wireshark GeoIp observation}%
-\label{img_wireshark_browser}%
+\label{img_wireshark_geoip}%
 \end{figure}%
 
 
 \section{Task 3}\label{task3}
+
+
 \end{document}
