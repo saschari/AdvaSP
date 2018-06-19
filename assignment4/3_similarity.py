@@ -2,7 +2,7 @@ import numpy as np
 from scipy import spatial
 from math import log
 
-def applyLog(array)
+def applyLog(array):
     out = []
     for i in array: 
         if i > 0:
@@ -12,8 +12,8 @@ def applyLog(array)
     return out
 
 # Load both fingerprint files
-fp1 = np.load("fingerprints.npy")
-#fp2 = np.load("...")
+fp1 = np.load("fingerprints_ours.npy")
+fp2 = np.load("fingerprints_theirs.npy")
 
 debug = False
 
@@ -23,9 +23,15 @@ for i in range(fp1.shape[0]):
     # Extract current site
     db = fp1[i]
 
+    if np.sum(db) == 0:
+        continue
+
     # Iterate over fingerprints from their sites
     for j in range(fp2.shape[0]):
-        theirs = fp2[i]
+        theirs = fp2[j]
+        
+        if np.sum(theirs) == 0:
+            continue
 
         # Get receive and send packages and apply log
         db_received = applyLog(db[0])
@@ -36,7 +42,7 @@ for i in range(fp1.shape[0]):
 
         # Calculate similarity 
         result_rec = 1 - spatial.distance.cosine(db_received, theirs_received)
-        result_sen = 1 - saptial.distance.cosine(db_sent, theirs_sent)
+        result_sen = 1 - spatial.distance.cosine(db_sent, theirs_sent)
 
         if debug:
             print("Similarities: sent {}, received {}".format(result_rec, result_sen))

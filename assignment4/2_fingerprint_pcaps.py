@@ -6,17 +6,20 @@ from os import walk
 from tqdm import tqdm
 
 # Setup i/o
-output_file = "fingerprints.npy"
+output_file = "fingerprints_ours.npy"
 input_dir = "./pcaps/*.pcap"
 
 # Initializing output matrix (80 sites, 2 vecors, 1300 packet sizes)
-output = np.zeros((80,2,1300))
+output = np.zeros((20,2,1300))
 
 # Iterating over all pcap files
 i = 0
 log = open("error_log.txt","w")
 for f in glob(input_dir):
     
+    file_number = f[f.rfind("/")+1:f.find(".pcap")]
+    print(file_number)
+
     # Reading in pcap
     print("Reading in {}".format(f))
     try:
@@ -34,6 +37,7 @@ for f in glob(input_dir):
     for packet in tqdm(packet_list):
         try:
             packet_length = packet.len
+            #print(packet_length)
         except:
             print("Packet broken")
             continue
@@ -63,8 +67,8 @@ for f in glob(input_dir):
                 sent[int(packet_length)] += 1
     
     # Save vectors into output matrix
-    output[i,0,:] = received
-    output[i,1,:] = sent
+    output[int(file_number),0,:] = received
+    output[int(file_number),1,:] = sent
 
     i += 1
     # Plotting
