@@ -12,9 +12,9 @@ user interface by supplying --headless.
 
 import pprint
 import pychrome
-import json
 import re
 import os
+import time
 import subprocess
 
 current_page = ''
@@ -33,6 +33,9 @@ class Crawler:
 
         # Start our tab after callbacks have been registered
         self.tab.start()
+        
+        # Set cache disabled
+        self.tab.Network.setCacheDisabled(cacheDisabled=True)
 
         # Enable network notifications for all request/response so our
         # callbacks actually receive some data.
@@ -43,12 +46,14 @@ class Crawler:
         #self.tab.Page.enable()
 
         # Navigate to a specific page
+        print("Visiting {}".format(url))
         self.tab.Page.navigate(url=url, _timeout=5)
 
         # Wait some time for events. This will wait until tab.stop()
         # is called or the timeout of 10 seconds is reached.
         # In this case we wait for our load event to be fired (see
         # `cb_load_event_fired`)
+        print("Waining {} seconds".format(wait_time))
         self.tab.wait(wait_time)
 
         # Close tab
@@ -57,27 +62,28 @@ class Crawler:
 
 def main():
 
-    # Remove previous file
-    os.remove("results/results.txt")
-
-    # Initialize chrome and wait until startup finished
+    # Initialize chrome
     p_chrome = subprocess.Popen(['google-chrome', '--remote-debugging-port=9222', '--enable-automation', '--headless'],stdout=subprocess.PIPE)
     c = Crawler()
-    c.Network.setCacheDisabled(True)
-    sys.wait(10)
     
+    # Wait until startup finished
+    print("Started chrome, waiting 10 seconds...")
+    time.sleep(10)
+    
+    it = 0
     links = open("fingerprinting-sites.txt", "r")
     for line in links:
         if len(line) > 1:
             s = line.rstrip()           
             
             # Name for pcap file
-            pcap_out = re.search("^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)", s)
-            if pcap_out:
-                pcap_out = pcap_out(1)
+            #pcap_out = re.search("^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)", s)
+            #if pcap_out:
+            #    pcap_out = pcap_out(1)
             
             # Start tcpdump as subprocess
-            p = subprocess.Popen(['tcpdump', '-i', 'enp0s3', '-w', pcap_out + '.pcap'], stdout=subprocess.PIPE)
+            print("Starting tcpdump...")
+            p = subprocess.Popen(['tcpdump', '-i', 'enp0s3', '-w', str(it) + '.pcap'], stdout=subprocess.PIPE)
             
             # Open the current page
             global current_page, ga_count, aip_set
@@ -85,7 +91,10 @@ def main():
             c.open_page(line, wait_time = 30)
 
             # Stop tcpdump
+            print("Stopping tcpdump...")
             p.send_signal(subprocess.signal.SIGTERM)
+            
+            it += 1
     
     p_chrome.send_signal(subprocess.signal.SIGTERM)
 
